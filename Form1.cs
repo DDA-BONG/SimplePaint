@@ -10,6 +10,7 @@ namespace SimplePaint
     public partial class Form1 : Form
     {
         enum ToolType { Line, Rectangle, Circle }
+        private double zoomRatio = 1.0;
         private Bitmap canvasBitmap;
         private Graphics canvasGraphics;
         private bool isDrawing = false;
@@ -198,7 +199,7 @@ namespace SimplePaint
 
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog(); openFileDialog.Filter =
             openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -223,6 +224,29 @@ namespace SimplePaint
                 // Panel의 AutoScroll 덕분에 이미지가 크면 자동으로 스크롤바가 생깁니다.
             }
         }
+        private void ApplyZoom()
+        {
+            // 비트맵의 원본 크기에 비율을 곱해 PictureBox 크기 변경
+            picCanvas.Width = (int)(canvasBitmap.Width * zoomRatio);
+            picCanvas.Height = (int)(canvasBitmap.Height * zoomRatio);
 
+            // PictureBox의 SizeMode가 StretchImage여야 이미지가 같이 커집니다.
+            picCanvas.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
+
+        private void btnZoomIn_Click(object sender, EventArgs e)
+        {
+            zoomRatio += 0.1; // 10% 확대
+            ApplyZoom();
+        }
+
+        private void btnZoomOut_Click(object sender, EventArgs e)
+        {
+            if (zoomRatio > 0.2) // 최소 크기 제한
+            {
+                zoomRatio -= 0.1; // 10% 축소
+                ApplyZoom();
+            }
+        }
     }
 }

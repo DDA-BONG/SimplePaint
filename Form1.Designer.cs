@@ -42,6 +42,8 @@
             btnOpenFile = new Button();
             btnSaveFile = new Button();
             panel1 = new Panel();
+            btnZoomOut = new Button();
+            btnZoomIn = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -167,7 +169,7 @@
             // 
             btnOpenFile.BackColor = Color.FromArgb(255, 255, 128);
             btnOpenFile.Font = new Font("맑은 고딕", 12F);
-            btnOpenFile.Location = new Point(607, 95);
+            btnOpenFile.Location = new Point(606, 65);
             btnOpenFile.Name = "btnOpenFile";
             btnOpenFile.Size = new Size(76, 62);
             btnOpenFile.TabIndex = 4;
@@ -179,7 +181,7 @@
             // 
             btnSaveFile.BackColor = SystemColors.ActiveCaption;
             btnSaveFile.Font = new Font("맑은 고딕", 12F);
-            btnSaveFile.Location = new Point(698, 95);
+            btnSaveFile.Location = new Point(688, 65);
             btnSaveFile.Name = "btnSaveFile";
             btnSaveFile.Size = new Size(76, 62);
             btnSaveFile.TabIndex = 5;
@@ -196,12 +198,38 @@
             panel1.Size = new Size(770, 377);
             panel1.TabIndex = 6;
             // 
+            // btnZoomOut
+            // 
+            btnZoomOut.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnZoomOut.Font = new Font("맑은 고딕", 10F);
+            btnZoomOut.Location = new Point(688, 133);
+            btnZoomOut.Name = "btnZoomOut";
+            btnZoomOut.Size = new Size(63, 30);
+            btnZoomOut.TabIndex = 8;
+            btnZoomOut.Text = "축소";
+            btnZoomOut.UseVisualStyleBackColor = true;
+            btnZoomOut.Click += btnZoomOut_Click;
+            // 
+            // btnZoomIn
+            // 
+            btnZoomIn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnZoomIn.Font = new Font("맑은 고딕", 10F);
+            btnZoomIn.Location = new Point(619, 133);
+            btnZoomIn.Name = "btnZoomIn";
+            btnZoomIn.Size = new Size(63, 30);
+            btnZoomIn.TabIndex = 7;
+            btnZoomIn.Text = "확대";
+            btnZoomIn.UseVisualStyleBackColor = true;
+            btnZoomIn.Click += btnZoomIn_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 558);
+            Controls.Add(btnZoomOut);
             Controls.Add(panel1);
+            Controls.Add(btnZoomIn);
             Controls.Add(btnSaveFile);
             Controls.Add(btnOpenFile);
             Controls.Add(groupBox3);
@@ -237,5 +265,7 @@
         private Button btnOpenFile;
         private Button btnSaveFile;
         private Panel panel1;
+        private Button btnZoomOut;
+        private Button btnZoomIn;
     }
 }
