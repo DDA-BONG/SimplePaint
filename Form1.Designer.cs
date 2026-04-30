@@ -155,9 +155,9 @@
             // 
             // picCanvas
             // 
-            picCanvas.Location = new Point(3, 3);
+            picCanvas.Location = new Point(16, 3);
             picCanvas.Name = "picCanvas";
-            picCanvas.Size = new Size(761, 377);
+            picCanvas.Size = new Size(747, 363);
             picCanvas.TabIndex = 3;
             picCanvas.TabStop = false;
             picCanvas.Paint += picCanvas_Paint;
@@ -193,14 +193,13 @@
             // 
             panel1.AutoScroll = true;
             panel1.Controls.Add(picCanvas);
-            panel1.Location = new Point(18, 169);
+            panel1.Location = new Point(12, 169);
             panel1.Name = "panel1";
-            panel1.Size = new Size(770, 377);
+            panel1.Size = new Size(776, 377);
             panel1.TabIndex = 6;
             // 
             // btnZoomOut
             // 
-            btnZoomOut.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnZoomOut.Font = new Font("맑은 고딕", 10F);
             btnZoomOut.Location = new Point(688, 133);
             btnZoomOut.Name = "btnZoomOut";
@@ -212,7 +211,6 @@
             // 
             // btnZoomIn
             // 
-            btnZoomIn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnZoomIn.Font = new Font("맑은 고딕", 10F);
             btnZoomIn.Location = new Point(619, 133);
             btnZoomIn.Name = "btnZoomIn";

@@ -86,14 +86,14 @@ namespace SimplePaint
         private void picCanvas_MouseDown(object sender, MouseEventArgs e)
         {
             isDrawing = true;
-            startPoint = e.Location;
+            startPoint = new Point((int)(e.X / zoomRatio), (int)(e.Y / zoomRatio));
         }
 
         private void picCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             if (!isDrawing) return;
             isDrawing = false;
-            endPoint = e.Location;
+            endPoint = new Point((int)(e.X / zoomRatio), (int)(e.Y / zoomRatio));
             using (Pen pen = new Pen(currentColor, currentLineWidth))
             {
                 DrawShape(canvasGraphics, pen, startPoint, endPoint);
@@ -104,7 +104,7 @@ namespace SimplePaint
         private void picCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (!isDrawing) return;
-            endPoint = e.Location;
+            endPoint = new Point((int)(e.X / zoomRatio), (int)(e.Y / zoomRatio));
             picCanvas.Invalidate();
         }
 
