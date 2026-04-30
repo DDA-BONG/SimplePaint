@@ -198,7 +198,31 @@ namespace SimplePaint
 
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
 
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                // 1. 원본 이미지 로드
+                Image originalImage = Image.FromFile(openFileDialog.FileName);
+
+                // 2. 이미지 크기에 맞춰 PictureBox 및 비트맵 크기 조정
+                picCanvas.Width = originalImage.Width;
+                picCanvas.Height = originalImage.Height;
+
+                // 3. 새 비트맵 생성 및 Graphics 초기화
+                canvasBitmap = new Bitmap(originalImage.Width, originalImage.Height);
+                canvasGraphics = Graphics.FromImage(canvasBitmap);
+
+                // 4. 불러온 이미지를 비트맵에 그리기
+                canvasGraphics.DrawImage(originalImage, 0, 0, originalImage.Width, originalImage.Height);
+
+                picCanvas.Image = canvasBitmap;
+                originalImage.Dispose();
+
+                // Panel의 AutoScroll 덕분에 이미지가 크면 자동으로 스크롤바가 생깁니다.
+            }
         }
+
     }
 }
