@@ -1,8 +1,10 @@
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+    
+
 namespace SimplePaint
 {
     public partial class Form1 : Form
@@ -16,7 +18,33 @@ namespace SimplePaint
         private ToolType currentTool = ToolType.Line;
         private Color currentColor = Color.Black;
         private int currentLineWidth = 2;
+        public Form1()
+        {
+            InitializeComponent();
 
+            //캔버스 초기화
+            canvasBitmap = new Bitmap(picCanvas.Width, picCanvas.Height);
+            canvasGraphics = Graphics.FromImage(canvasBitmap);
+            canvasGraphics.Clear(Color.White);
+            picCanvas.Image = canvasBitmap;
+            picCanvas.MouseDown += picCanvas_MouseDown;
+            picCanvas.MouseMove += picCanvas_MouseMove;
+            picCanvas.MouseUp += picCanvas_MouseUp;
+            picCanvas.Paint += picCanvas_Paint;
+            btnLine.Click += btnLine_Click;
+            btnRectangle.Click += btnRectangle_Click;
+            btnCircle.Click += btnCircle_Click;
+            cmbColor.SelectedIndexChanged += cmbColor_SelectedIndexChanged;
+            cmbColor.SelectedIndex = 0; //기본 색상 검정
+
+            trbLineWidth.Minimum = 1;
+            trbLineWidth.Maximum = 10;
+            trbLineWidth.Value = 2;
+            trbLineWidth.ValueChanged += trbLineWidth_ValueChanged;
+
+
+
+        }
         private void btnLine_Click(object sender, EventArgs e)
         {
             currentTool = ToolType.Line;
@@ -62,12 +90,12 @@ namespace SimplePaint
 
         private void picCanvas_MouseUp(object sender, MouseEventArgs e)
         {
-            if(!isDrawing) return;
+            if (!isDrawing) return;
             isDrawing = false;
             endPoint = e.Location;
             using (Pen pen = new Pen(currentColor, currentLineWidth))
             {
-                DrawShape(canvasGraphics,pen,startPoint, endPoint);
+                DrawShape(canvasGraphics, pen, startPoint, endPoint);
             }
             picCanvas.Invalidate();
         }
@@ -81,45 +109,32 @@ namespace SimplePaint
 
         private void picCanvas_Paint(object sender, PaintEventArgs e)
         {
-            if(!isDrawing) return;
+            if (!isDrawing) return;
             using (Pen pen = new Pen(currentColor, currentLineWidth))
             {
-                previewPen.DashStyle = DashStyle.Dash;
+                
                 DrawShape(e.Graphics, pen, startPoint, endPoint);
             }
         }
-    }
-}
-namespace SimplePaint
-{
-    public partial class Form1 : Form
-    {
-        public Form1()
+        private void DrawShape(Graphics g, Pen pen, Point p1, Point p2)
         {
-            InitializeComponent();
-
-            //캔버스 초기화
-            canvasBitmap = new Bitmap(picCanvas.Width, picCanvas.Height);
-            canvasGraphics = Graphics.FromImage(canvasBitmap);
-            canvasGraphics.Clear(Color.White);
-            picCanvas.Image = canvasBitmap;
-            picCanvas.MouseDown += picCanvas_MouseDown;
-            picCanvas.MouseMove += picCanvas_MouseMove;
-            picCanvas.MouseUp += picCanvas_MouseUp;
-            picCanvas.Paint += picCanvas_Paint;
-            btnLine.Click += btnLine_Click;
-            btnRectangle.Click += btnRectangle_Click;
-            btnCircle.Click += btnCircle_Click;
-            cmbColor.SelectedIndexChanged += cmbColor_SelectedIndexChanged;
-            cmbColor.SelectedIndex = 0; //기본 색상 검정
-
-            trbLineWidth.Minimum = 1;
-            trbLineWidth.Maximum = 10;
-            trbLineWidth.Value = 2;
-            trbLineWidth.ValueChanged += trbLineWidth_ValueChanged;
-
-
-
+            switch (currentTool)
+            {
+                case ToolType.Line:
+                    g.DrawLine(pen, p1, p2); break;
+                case ToolType.Rectangle:
+                    g.DrawRectangle(pen, GetRectangle(p1, p2)); break;
+                case ToolType.Circle:
+                    g.DrawEllipse(pen, GetRectangle(p1, p2)); break;
+            }
+        }
+        private Rectangle GetRectangle(Point p1, Point p2)
+        {
+            return new Rectangle(
+                Math.Min(p1.X, p2.X),
+                Math.Min(p1.Y, p2.Y),
+                Math.Abs(p1.X - p2.X),
+                Math.Abs(p1.Y - p2.Y));
         }
 
         private void Form1_Load(object sender, EventArgs e)
