@@ -110,10 +110,10 @@ namespace SimplePaint
         private void picCanvas_Paint(object sender, PaintEventArgs e)
         {
             if (!isDrawing) return;
-            using (Pen pen = new Pen(currentColor, currentLineWidth))
+            using (Pen previewPen = new Pen(currentColor, currentLineWidth))
             {
-                
-                DrawShape(e.Graphics, pen, startPoint, endPoint);
+                previewPen.DashStyle = DashStyle.Dash;
+                DrawShape(e.Graphics, previewPen, startPoint, endPoint);
             }
         }
         private void DrawShape(Graphics g, Pen pen, Point p1, Point p2)
@@ -143,6 +143,60 @@ namespace SimplePaint
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSaveFile_Click(object sender, EventArgs e)
+        {
+            // 1. SaveFileDialog 생성 및 설정
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            // PDF 요구사항: png, jpg, bmp 3가지 포맷 설정
+            saveFileDialog.Filter = "PNG Image|*.png|JPeg Image|*.jpg|Bitmap Image|*.bmp";
+            saveFileDialog.Title = "이미지 파일로 저장";
+            saveFileDialog.FileName = "내그림"; // 초기 파일명 설정
+
+            // 2. 사용자가 '저장' 버튼을 눌렀을 때만 실행
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // 선택한 파일 경로 및 확장자 확인
+                    string filePath = saveFileDialog.FileName;
+                    string extension = System.IO.Path.GetExtension(filePath).ToLower();
+
+                    // 3. 확장자에 따른 이미지 포맷 결정
+                    System.Drawing.Imaging.ImageFormat format;
+                    switch (extension)
+                    {
+                        case ".jpg":
+                        case ".jpeg":
+                            format = System.Drawing.Imaging.ImageFormat.Jpeg;
+                            break;
+                        case ".bmp":
+                            format = System.Drawing.Imaging.ImageFormat.Bmp;
+                            break;
+                        case ".png":
+                        default:
+                            format = System.Drawing.Imaging.ImageFormat.Png;
+                            break;
+                    }
+
+                    // 4. 비트맵(canvasBitmap)을 파일로 저장
+                    // 화면의 PictureBox가 아닌, 데이터가 담긴 Bitmap 객체를 직접 저장합니다.
+                    canvasBitmap.Save(filePath, format);
+
+                    MessageBox.Show("이미지가 성공적으로 저장되었습니다!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("저장 중 오류가 발생했습니다: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnOpenFile_Click(object sender, EventArgs e)
         {
 
         }
